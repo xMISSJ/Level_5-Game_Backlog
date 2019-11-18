@@ -6,4 +6,7 @@
     <string name="day_hint">Day</string>
     <string name="month_hint">Month</string>
     <string name="year_hint">Year</string>
+    <string name="title_text">Placeholder Title</string>
+    <string name="platform_text">Placeholder Platform</string>
+    <string name="release_text">Release Placeholder</string>
 </resources>

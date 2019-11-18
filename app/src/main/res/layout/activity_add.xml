@@ -46,11 +46,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/title"
+                android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/title_hint"
@@ -58,11 +59,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/platform"
+                android:id="@+id/etPlatform"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/platform"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/platform_hint"
@@ -75,12 +77,13 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/day"
+                    android:id="@+id/etDay"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/day"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/day_hint"
@@ -89,12 +92,13 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/month"
+                    android:id="@+id/etMonth"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/month"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/month_hint"
@@ -103,12 +107,13 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/year"
+                    android:id="@+id/etYear"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/year"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/year_hint"
