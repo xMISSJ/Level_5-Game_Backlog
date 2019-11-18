@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         main_button.setOnClickListener {
-            //startAddActivity()
+            startAddActivity()
         }
     }
 
