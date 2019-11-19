@@ -41,7 +41,21 @@
                     android:text="@string/platform_text" />
 
                 <TextView
-                    android:id="@+id/release"
+                    android:id="@+id/releaseDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/release_text" />
+
+                <TextView
+                    android:id="@+id/releaseMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/release_text" />
+
+                <TextView
+                    android:id="@+id/releaseYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

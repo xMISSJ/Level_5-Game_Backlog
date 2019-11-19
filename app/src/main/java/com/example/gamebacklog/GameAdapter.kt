@@ -48,7 +48,9 @@ class GameAdapter (private val games: List<Game>) :
         fun bind(game: Game) {
             itemView.etTitle.text = game.title
             itemView.etPlatform.text = game.platform
-            itemView.release.text = game.day.toString() + game.month.toString() + game.year.toString()
+            itemView.releaseDay.text = game.day.toString()
+            itemView.releaseMonth.text = game.month.toString()
+            itemView.releaseYear.text = game.year.toString()
         }
     }
 }

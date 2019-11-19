@@ -6,12 +6,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.gamebacklog.AddActivity.Companion.EXTRA_GAME
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 const val ADD_GAME_REQUEST_CODE = 100
 
 class MainActivity : AppCompatActivity() {
+
+    private val games = arrayListOf<Game>()
+    private val gameAdapter = GameAdapter(games)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +28,19 @@ class MainActivity : AppCompatActivity() {
         main_button.setOnClickListener {
             startAddActivity()
         }
+
+        initViews()
+    }
+
+    private fun initViews() {
+        // Initialize the recycler view with a linear layout manager, adapter
+        rvGames.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+        rvGames.adapter = gameAdapter
     }
 
     private fun startAddActivity() {
         val intent = Intent(this, AddActivity::class.java)
-        startActivity(intent)
-        //startActivityForResult(intent, ADD_GAME_REQUEST_CODE)
+        startActivityForResult(intent, ADD_GAME_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -34,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ADD_GAME_REQUEST_CODE -> {
-/*                    val portal = data!!.getParcelableExtra<Portal>(EXTRA_PORTAL)
-                    portals.add(portal)
-                    portalAdapter.notifyDataSetChanged()*/
+                    val game = data!!.getParcelableExtra<Game>(EXTRA_GAME)
+                    games.add(game)
+                    gameAdapter.notifyDataSetChanged()
                 }
             }
         }
