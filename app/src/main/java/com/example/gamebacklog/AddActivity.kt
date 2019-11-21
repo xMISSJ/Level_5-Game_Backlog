@@ -26,7 +26,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun onAddClick() {
-        val MONTHS = arrayListOf("January", "February", "March", "May", "June", "July", "August", "September", "October", "November", "December")
+        val MONTHS = arrayListOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 
         var title = etTitle.title.text.toString()
         var platform = etPlatform.platform.text.toString()
@@ -38,7 +38,7 @@ class AddActivity : AppCompatActivity() {
         if (title.isNotBlank() && platform.isNotBlank() && day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
 
             // Fix error with the array length.
-            val game = Game(title, platform, day.toInt(), MONTHS[month.toInt()], year.toInt())
+            val game = Game(title, platform, day.toInt(), MONTHS[month.toInt()-1], year.toInt())
 
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_GAME, game)
