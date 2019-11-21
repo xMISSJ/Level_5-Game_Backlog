@@ -3,10 +3,12 @@ package com.example.gamebacklog
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_add.view.*
+import java.lang.Integer.parseInt
 
 class AddActivity : AppCompatActivity() {
 
@@ -24,17 +26,19 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun onAddClick() {
+        val MONTHS = arrayListOf("January", "February", "March", "May", "June", "July", "August", "September", "October", "November", "December")
+
+        var title = etTitle.title.text.toString()
+        var platform = etPlatform.platform.text.toString()
+        var day = etDay.day.text.toString()
+        var month = etMonth.month.text.toString()
+        var year = etYear.year.text.toString()
+
         // Check whether the input isn't empty.
-        if (!etTitle.title.text.isNullOrBlank() && !etPlatform.platform.text.isNullOrBlank() &&
-            !etDay.day.text.isNullOrEmpty() && !etMonth.month.text.isNullOrBlank() && !etYear.year.text.isNullOrBlank()
-        ) {
-            val game = Game(
-                etTitle.title.text.toString(),
-                etPlatform.platform.text.toString(),
-                etDay.day.text.toString().toInt(),
-                etMonth.month.text.toString().toInt(),
-                etYear.year.text.toString().toInt()
-            )
+        if (title.isNotBlank() && platform.isNotBlank() && day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
+
+            // Fix error with the array length.
+            val game = Game(title, platform, day.toInt(), MONTHS[month.toInt()], year.toInt())
 
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_GAME, game)

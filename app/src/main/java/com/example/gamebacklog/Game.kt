@@ -9,7 +9,7 @@ data class Game (
     val platform: String,
 
     val day: Int,
-    val month: Int,
+    val month: String,
     val year: Int
 
 ) : Parcelable
