@@ -11,9 +11,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gamebacklog.AddActivity.Companion.EXTRA_GAME
+import com.example.gamebacklog.Repository.GameRepository
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 const val ADD_GAME_REQUEST_CODE = 100
 
@@ -21,11 +26,13 @@ class MainActivity : AppCompatActivity() {
 
     private val games = arrayListOf<Game>()
     private val gameAdapter = GameAdapter(games)
+    private lateinit var gameRepository: GameRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        gameRepository = GameRepository(this)
 
         main_button.setOnClickListener {
             startAddActivity()
@@ -39,6 +46,18 @@ class MainActivity : AppCompatActivity() {
         rvGames.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
         createItemTouchHelper().attachToRecyclerView(rvGames)
+        getGamesFromDatabase()
+    }
+
+    private fun getGamesFromDatabase() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val games = withContext(Dispatchers.IO) {
+                gameRepository.getAllGames()
+            }
+            this@MainActivity.games.clear()
+            this@MainActivity.games.addAll(games)
+            gameAdapter.notifyDataSetChanged()
+        }
     }
 
     /**
@@ -64,8 +83,15 @@ class MainActivity : AppCompatActivity() {
             // Callback triggered when a user swiped an item.
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                games.removeAt(position)
-                gameAdapter.notifyDataSetChanged()
+
+                val gameToDelete = games.removeAt(position)
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    withContext(Dispatchers.IO) {
+                        gameRepository.deleteGame(gameToDelete)
+                    }
+                    getGamesFromDatabase()
+                }
             }
         }
         return ItemTouchHelper(callback)
@@ -82,8 +108,14 @@ class MainActivity : AppCompatActivity() {
             when (requestCode) {
                 ADD_GAME_REQUEST_CODE -> {
                     val game = data!!.getParcelableExtra<Game>(EXTRA_GAME)
-                    games.add(game)
-                    gameAdapter.notifyDataSetChanged()
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        withContext(Dispatchers.IO) {
+                            gameRepository.insertGame(game)
+                        }
+                        getGamesFromDatabase()
+                    }
+
                 }
             }
         }
@@ -109,6 +141,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun deleteGames() {
-        Toast.makeText(this, "Remove all the games", Toast.LENGTH_LONG).show()
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO) {
+                for (i in games.indices)
+                gameRepository.deleteGame(games[i])
+            }
+            getGamesFromDatabase()
+        }
     }
 }
