@@ -27,5 +27,4 @@ public class GameRepository(context: Context) {
     suspend fun updateGame(game: Game) {
         gameDao.updateGame(game)
     }
-
 }

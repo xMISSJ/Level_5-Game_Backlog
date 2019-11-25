@@ -6,7 +6,7 @@ import com.example.gamebacklog.Game
 @Dao
 interface GameDao {
 
-    @Query("SELECT * FROM gameTable")
+    @Query("SELECT * FROM gameTable ORDER BY year ASC, month ASC, day ASC")
     suspend fun getAllGames(): List<Game>
 
     @Insert
@@ -17,5 +17,4 @@ interface GameDao {
 
     @Update
     suspend fun updateGame(game: Game)
-
 }
