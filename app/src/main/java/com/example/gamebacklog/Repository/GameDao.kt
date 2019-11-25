@@ -1,13 +1,14 @@
 package com.example.gamebacklog.Repository
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.gamebacklog.Game
+import com.example.gamebacklog.MainActivity.Game
 
 @Dao
 interface GameDao {
 
     @Query("SELECT * FROM gameTable ORDER BY year ASC, month ASC, day ASC")
-    suspend fun getAllGames(): List<Game>
+    fun getAllGames(): LiveData<List<Game>>
 
     @Insert
     suspend fun insertGame(game: Game)

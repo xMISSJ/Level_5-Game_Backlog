@@ -1,4 +1,4 @@
-package com.example.gamebacklog
+package com.example.gamebacklog.MainActivity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

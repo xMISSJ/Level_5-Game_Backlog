@@ -1,14 +1,13 @@
-package com.example.gamebacklog
+package com.example.gamebacklog.MainActivity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gamebacklog.R
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_add.view.*
-import java.lang.Integer.parseInt
 
 class AddActivity : AppCompatActivity() {
 
@@ -44,7 +43,13 @@ class AddActivity : AppCompatActivity() {
             if (day.toInt() in dayRange && month.toInt() in monthRange && year.toInt() in yearRange) {
                 // Fix error with the array length.
                 val game =
-                    Game(title, platform, day.toInt(), MONTHS[month.toInt() - 1], year.toInt())
+                    Game(
+                        title,
+                        platform,
+                        day.toInt(),
+                        MONTHS[month.toInt() - 1],
+                        year.toInt()
+                    )
 
                 val resultIntent = Intent()
                 resultIntent.putExtra(EXTRA_GAME, game)

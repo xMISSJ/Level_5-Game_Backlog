@@ -1,4 +1,4 @@
-package com.example.gamebacklog
+package com.example.gamebacklog.MainActivity
 
 import android.app.Activity
 import android.content.Intent
@@ -6,12 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gamebacklog.AddActivity.Companion.EXTRA_GAME
+import com.example.gamebacklog.MainActivity.AddActivity.Companion.EXTRA_GAME
+import com.example.gamebacklog.R
 import com.example.gamebacklog.Repository.GameRepository
+import com.example.gamebacklog.ViewModel_LiveData.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -26,19 +29,21 @@ class MainActivity : AppCompatActivity() {
 
     private val games = arrayListOf<Game>()
     private val gameAdapter = GameAdapter(games)
-    private lateinit var gameRepository: GameRepository
+    //private lateinit var gameRepository: GameRepository
+    private lateinit var viewModel : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        gameRepository = GameRepository(this)
+        //gameRepository = GameRepository(this)
 
         main_button.setOnClickListener {
             startAddActivity()
         }
 
         initViews()
+        initViewModel()
     }
 
     private fun initViews() {
@@ -46,10 +51,22 @@ class MainActivity : AppCompatActivity() {
         rvGames.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
         rvGames.adapter = gameAdapter
         createItemTouchHelper().attachToRecyclerView(rvGames)
-        getGamesFromDatabase()
+        //getGamesFromDatabase()
     }
 
-    private fun getGamesFromDatabase() {
+    private fun initViewModel(){
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+        // Observe reminders from the view model, update the list when the data is changed.
+        viewModel.games.observe(this, Observer { reminders ->
+            this@MainActivity.games.clear()
+            this@MainActivity.games.addAll(reminders)
+            gameAdapter.notifyDataSetChanged()
+        })
+
+    }
+
+    /*private fun getGamesFromDatabase() {
         CoroutineScope(Dispatchers.Main).launch {
             val games = withContext(Dispatchers.IO) {
                 gameRepository.getAllGames()
@@ -58,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity.games.addAll(games)
             gameAdapter.notifyDataSetChanged()
         }
-    }
+    }*/
 
     /**
      * Create a touch helper to recognize when a user swipes an item from a recycler view.
@@ -86,12 +103,14 @@ class MainActivity : AppCompatActivity() {
 
                 val gameToDelete = games.removeAt(position)
 
-                CoroutineScope(Dispatchers.Main).launch {
+/*                CoroutineScope(Dispatchers.Main).launch {
                     withContext(Dispatchers.IO) {
                         gameRepository.deleteGame(gameToDelete)
                     }
                     getGamesFromDatabase()
-                }
+                }*/
+
+                viewModel.deleteGame(gameToDelete)
             }
         }
         return ItemTouchHelper(callback)
@@ -109,13 +128,14 @@ class MainActivity : AppCompatActivity() {
                 ADD_GAME_REQUEST_CODE -> {
                     val game = data!!.getParcelableExtra<Game>(EXTRA_GAME)
 
-                    CoroutineScope(Dispatchers.Main).launch {
+/*                    CoroutineScope(Dispatchers.Main).launch {
                         withContext(Dispatchers.IO) {
                             gameRepository.insertGame(game)
                         }
                         getGamesFromDatabase()
-                    }
+                    }*/
 
+                    viewModel.insertGame(game)
                 }
             }
         }
@@ -141,12 +161,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun deleteGames() {
-        CoroutineScope(Dispatchers.Main).launch {
+/*        CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO) {
                 for (i in games.indices)
                 gameRepository.deleteGame(games[i])
             }
             getGamesFromDatabase()
+        }*/
+
+        for (i in games.indices) {
+            viewModel.deleteGame(games[i])
         }
     }
 }

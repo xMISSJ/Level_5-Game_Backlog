@@ -1,7 +1,8 @@
 package com.example.gamebacklog.Repository
 
 import android.content.Context
-import com.example.gamebacklog.Game
+import androidx.lifecycle.LiveData
+import com.example.gamebacklog.MainActivity.Game
 
 public class GameRepository(context: Context) {
 
@@ -12,7 +13,7 @@ public class GameRepository(context: Context) {
         gameDao = gameRoomDatabase!!.GameDao()
     }
 
-    suspend fun getAllGames(): List<Game> {
+    fun getAllGames(): LiveData<List<Game>> {
         return gameDao.getAllGames()
     }
 
