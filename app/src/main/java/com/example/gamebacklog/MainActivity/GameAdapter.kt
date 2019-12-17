@@ -9,7 +9,7 @@ import com.example.gamebacklog.R
 import kotlinx.android.synthetic.main.item_game.view.*
 
 /*
- * An ArrayList of Portal objects is added to the class constructor
+ * An ArrayList of Game objects is added to the class constructor
  * so the RecyclerView knows which Game objects it needs to display.
  */
 class GameAdapter (private val games: List<Game>) :
